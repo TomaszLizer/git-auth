@@ -30,6 +30,10 @@ inputs:
   token:
     description: Github token with proper access rights
     required: true
+  fail_if_empty_token:
+    description: Will fail job if set to true and provided token is empty
+    required: false
+    default: 'true'
   host:
     description: Git host you want to authenticate
     required: false
@@ -38,7 +42,12 @@ inputs:
 runs: 
   using: composite
   steps:
-    - name: Add github token to git url
+    - name: Validate token not empty
+      if: "${{ inputs.fail_if_empty_token == 'true' && inputs.token == '' }}"
+      uses: actions/github-script@v6.3.3
+      with:
+        script: core.setFailed('Empty token provided')
+    - name: Add token to git url
       uses: TLizer/action-with-post-step@v1
       with:
         # Sets up git authentication with passed token
