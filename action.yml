@@ -38,7 +38,7 @@ inputs:
 runs: 
   using: composite
   steps:
-    - name: Add github token to git url
+    - name: Add token to git url
       uses: TLizer/action-with-post-step@v1
       with:
         # Sets up git authentication with passed token
